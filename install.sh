@@ -5,3 +5,5 @@ ln -sf $PWD/.config/nvim/init.vim ~/.config/nvim/init.vim
 ln -sf $PWD/.bashrc ~/.bashrc
 ln -sf $PWD/.bash_profile ~/.bash_profile
 ln -sf $PWD/.xinitrc ~/.xinitrc
+cp $PWD/.local/bin/* ~/.local/bin/
+cp $PWD/.local/share/fonts/* ~/.local/share/fonts/
