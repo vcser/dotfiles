@@ -13,10 +13,7 @@
 LOC=$(readlink -f "$0")
 DIR=$(dirname "$LOC")
 
-# Change the appearance of the module identifier. if this is set to "unicode", then symbols will be used as identifiers instead of text. E.g. [📪 0] instead of [MAIL 0].
-# Requires a font with adequate unicode character support
 
-# Change the charachter(s) used to seperate modules. If two are used, they will be placed at the start and end.
 export SEP1="| "
 export SEP2=" "
 
@@ -27,15 +24,19 @@ dwm_battery () {
     STATUS=$(cat /sys/class/power_supply/BAT1/status)
 
     printf "%s" "$SEP1"
-    if [ "$IDENTIFIER" = "unicode" ]; then
         if [ "$STATUS" = "Charging" ]; then
-            printf "🔌 %s%% %s" "$CHARGE" "$STATUS"
+            printf " %s%%" "$CHARGE"
         else
-            printf "🔋 %s%% %s" "$CHARGE" "$STATUS"
+			if [[ "$CHARGE" -gt 0 ]] && [[ "$CHARGE" -le 25 ]]; then
+            	printf "  %s%%" "$CHARGE"
+			elif [[ "$CHARGE" -gt 25 ]] && [[ "$CHARGE" -le 50 ]]; then
+            	printf "  %s%%" "$CHARGE"
+			elif [[ "$CHARGE" -gt 50 ]] && [[ "$CHARGE" -le 75 ]]; then
+				printf "  %s%%" "$CHARGE"
+			else
+				printf "  %s%%" "$CHARGE"
+			fi
         fi
-    else
-        printf "BAT %s%% %s" "$CHARGE" "$STATUS"
-    fi
     printf "%s\n" "$SEP2"
 }
 
@@ -44,15 +45,15 @@ dwm_alsa () {
     VOL=$(amixer get Master | tail -n1 | sed -r "s/.*\[(.*)%\].*/\1/")
     printf "%s" "$SEP1"
     	if [ "$STATUS" = "off" ]; then
-	            printf ""
+	            printf "ﱝ"
     	else
     		#removed this line becuase it may get confusing
 	        if [ "$VOL" -gt 0 ] && [ "$VOL" -le 33 ]; then
-	            printf " %s%%" "$VOL"
+	            printf "奄 %s%%" "$VOL"
 	        elif [ "$VOL" -gt 33 ] && [ "$VOL" -le 66 ]; then
-	            printf " %s%%" "$VOL"
+	            printf "奔 %s%%" "$VOL"
 	        else
-	            printf " %s%%" "$VOL"
+	            printf "墳 %s%%" "$VOL"
 	        fi
 		fi
     printf "%s\n" "$SEP2"
@@ -83,7 +84,7 @@ dwm_resources () {
 	STOPER=$(echo $df_output | awk '{print $5}')
 
 	printf "%s" "$SEP1"
-	printf " %.0f%%  %s  %s" "$MEMPER" "$CPU" "$STOPER"
+	printf " %.0f%%  %s  %s" "$MEMPER" "$CPU" "$STOPER"
 	printf "%s\n" "$SEP2"
 }
 
@@ -94,7 +95,7 @@ do
     # Append results of each func one by one to the upperbar string
     upperbar=""
     upperbar="$upperbar$(dwm_resources)"
-#    upperbar="$upperbar$(dwm_battery)"
+    upperbar="$upperbar$(dwm_battery)"
     upperbar="$upperbar$(dwm_alsa)"
     upperbar="$upperbar$(dwm_date)"
    

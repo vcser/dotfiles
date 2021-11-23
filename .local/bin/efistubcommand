@@ -1,0 +1,8 @@
+efibootmgr -b 0000 -B && \
+efibootmgr -d /dev/nvme0n1 -p 1 \
+-c -L "Arch Linux" \
+-l /vmlinuz-linux-zen \
+-u "cryptdevice=PARTLABEL=Cryptroot:cryptroot \
+root=UUID=b898ac7d-70d9-4037-aee2-578553240114 rw \
+initrd=amd-ucode.img initrd=initramfs-linux-zen.img \
+quiet"

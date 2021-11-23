@@ -1,0 +1,22 @@
+#!/bin/bash
+
+menu() {
+    echo "Connections"
+    echo "ColorScheme"
+    echo "Powermode"
+    echo "Screen"
+}
+
+connections() {
+    echo "Bluetooth"
+    echo "Wifi"
+    echo "Back"
+}
+
+( [[ -z "$*" ]] || [[ "$1" = "Back" ]] ) && menu
+[[ "$1" = "Connections" ]] && connections
+[[ "$1" = "Bluetooth" ]] && {
+    bluetoothpower=$(bluetoothctl show | grep Powered | cut -d " " -f 2)
+    [[ $bluetoothpower = "yes" ]] && bluetoothctl power off 2>&1 > /dev/null
+    [[ $bluetoothpower = "no" ]] && bluetoothctl power on 2>&1 > /dev/null
+}

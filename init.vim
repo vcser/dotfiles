@@ -19,13 +19,3 @@ set autoindent
 "set ruler
 set mouse=a
 set cmdheight=2
-
-call plug#begin('~/.vim/plugged')
-
-Plug 'arcticicestudio/nord-vim'
-Plug 'preservim/nerdtree'
-
-call plug#end()
-
-colorscheme nord
-nnoremap <C-n> :NERDTreeToggle<CR>
