@@ -1,2 +1,2 @@
-OUTDATED\\
-now using i3
+OUTDATED
+<p>now using i3</p>
